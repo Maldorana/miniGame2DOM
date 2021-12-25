@@ -13,12 +13,27 @@ const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
-const scores = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
-let playing = true;
+let playing, scores, currentScore, activePlayer;
 
 // Functions helpers
+const init = () => {
+  playing = true;
+  scores = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+
+  document.querySelectorAll(`.current-score`).forEach(element => {
+    element.textContent = 0;
+  });
+  document.querySelectorAll(`.score`).forEach(element => {
+    element.textContent = 0;
+  });
+
+  document.querySelectorAll('.player').forEach(element => {
+    element.classList.remove('player--winner');
+  });
+  player0El.classList.add('player--active');
+};
 
 const swapPlayer = () => {
   document.querySelector(`#current--${activePlayer}`).textContent = 0;
@@ -27,6 +42,8 @@ const swapPlayer = () => {
   player0El.classList.toggle('player--active');
   player1El.classList.toggle('player--active');
 };
+
+init();
 
 // Roll dice
 btnRoll.addEventListener('click', function () {
@@ -60,7 +77,7 @@ btnHold.addEventListener('click', function () {
       scores[activePlayer];
 
     // Check if active player's score is >= 100. Finish game if true.
-    if (scores[activePlayer] >= 10) {
+    if (scores[activePlayer] >= 100) {
       document
         .querySelector(`.player--${activePlayer}`)
         .classList.add('player--winner');
@@ -75,4 +92,9 @@ btnHold.addEventListener('click', function () {
       swapPlayer();
     }
   }
+});
+
+// New game
+btnNew.addEventListener('click', function () {
+  init();
 });
